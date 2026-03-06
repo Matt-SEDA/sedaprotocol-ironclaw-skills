@@ -29,6 +29,18 @@ Use this skill when the user asks to:
 - configure a Data Proxy (private APIs / website-to-API)
 - verify prover deployments or use EVM Hardhat integration
 
+## Canonical pages (must use)
+- Root: https://docs.seda.xyz/home/for-agents/getting-started
+- Data source: https://docs.seda.xyz/home/for-agents/modules/10-data-access
+- HTTP timeouts: https://docs.seda.xyz/home/for-agents/modules/12-http-fetch-timeouts
+- Build + test OP: https://docs.seda.xyz/home/for-agents/modules/20-build-op
+- Wallet + tokens: https://docs.seda.xyz/home/for-agents/modules/30-wallet-and-tokens
+- Execute Fast: https://docs.seda.xyz/home/for-agents/modules/40-execute-fast
+- Deploy + execute Core: https://docs.seda.xyz/home/for-agents/modules/50-execute-core
+- Prover deployments: https://docs.seda.xyz/home/for-agents/modules/60-prover-deployments
+- EVM Hardhat: https://docs.seda.xyz/home/for-agents/modules/60-relay-evm-hardhat
+- Data Proxy: https://docs.seda.xyz/home/for-agents/modules/25-data-proxy
+
 ## Hard rules (must follow)
 1) Do not guess commands, IDs, endpoints, or payload shapes.
 2) Use only the SEDA For Agents pages (root above) + direct subpages they link to.
@@ -98,17 +110,5 @@ Ask for only what you need, one at a time:
 - If Fast: Fast API key (never echo it)
 - If deploying: confirmation + wallet/tokens readiness
 - If Core deploy: confirmation + whether mnemonic is already set locally (never request it by default)
-
-## Canonical subpages (expected to exist)
-These are the pages you should use when linked from the root:
-- Data source: /home/for-agents/modules/10-data-access
-- HTTP fetch timeouts: /home/for-agents/modules/12-http-fetch-timeouts
-- Data Proxy: /home/for-agents/modules/25-data-proxy
-- Build + test OP: /home/for-agents/modules/20-build-op
-- Wallet + tokens: /home/for-agents/modules/30-wallet-and-tokens
-- Execute Fast: /home/for-agents/modules/40-execute-fast
-- Execute Core: /home/for-agents/modules/50-execute-core
-- Prover deployments: /home/for-agents/modules/60-prover-deployments
-- EVM Hardhat: /home/for-agents/modules/60-relay-evm-hardhat
 
 If any page is missing or inaccessible, stop and ask the user for the correct URL.
