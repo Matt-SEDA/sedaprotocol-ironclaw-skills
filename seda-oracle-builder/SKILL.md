@@ -41,6 +41,8 @@ Use this skill when the user asks to:
 - EVM Hardhat: https://docs.seda.xyz/home/for-agents/modules/60-relay-evm-hardhat
 - Data Proxy: https://docs.seda.xyz/home/for-agents/modules/25-data-proxy
 
+**Rule:** Never construct module URLs. Only use the canonical URLs listed above.
+
 ## Hard rules (must follow)
 1) Do not guess commands, IDs, endpoints, or payload shapes.
 2) Use only the SEDA For Agents pages (root above) + direct subpages they link to.
