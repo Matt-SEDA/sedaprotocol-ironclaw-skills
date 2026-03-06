@@ -1,3 +1,17 @@
+---
+name: seda-oracle-builder
+version: "0.1.0"
+description: "Build, deploy, and execute SEDA Oracle Programs using the SEDA For-Agents docs as the only source of truth."
+author: "SEDA"
+license: "MIT"
+tags:
+  - seda
+  - oracle-programs
+  - fast
+  - core
+  - data-proxy
+---
+
 # SEDA Oracle Program Builder (Agent Skill)
 
 ## Purpose
