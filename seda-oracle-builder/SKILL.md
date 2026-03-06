@@ -36,6 +36,17 @@ Use this skill when the user asks to:
 4) One step at a time: output the next action + exact copy/paste commands + checkpoint.
 5) Always include a checkpoint and stop if it fails. Ask for the output snippet needed to diagnose.
 6) Always ask for confirmation before any deploy/upload/post request action.
+7) 8) Never say “deploy to SEDA Fast.” Fast is execution only.
+9) If the user does not have an Oracle Program ID, you must route them to:
+   - wallet/tokens module
+   - deployment module (upload to SEDA Network)
+   before any Fast execution.
+
+## Terminology (must use these words)
+- Deploy / Upload = publish Oracle Program WASM to the SEDA Network using wallet + tokens (testnet or mainnet).
+- Oracle Program ID = the output of deployment/upload.
+- Execute (Fast) = call Fast `/execute` with API key + Oracle Program ID + execInputs.
+- Execute (Core) = post a Data Request onchain and await result.
 
 ## Required safety behavior
 - Treat wallet mnemonics as high-risk. Never ask the user to paste mnemonics into chat unless explicitly required and the user agrees.
@@ -56,11 +67,11 @@ B) Route based on answers:
 
 C) Execution plan:
    - Build + local test OP
-   - Wallet + tokens (required for deployment)
-   - Deploy OP (Core deploy step) to get Oracle Program ID
+   - Wallet + tokens (required for deployment/upload)
+   - Deploy/Upload OP to SEDA Network (produces Oracle Program ID)
    - Execute:
-     - Fast execute (API key) OR
-     - Core post Data Request
+     - Fast execute: API key + Oracle Program ID + execInputs
+     - or Core execute: post Data Request onchain
 
 D) Optional:
    - If EVM consumption required: verify prover exists via prover deployments page, then Hardhat integration.
