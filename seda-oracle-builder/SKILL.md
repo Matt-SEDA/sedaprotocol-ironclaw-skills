@@ -29,17 +29,12 @@ Use this skill when the user asks to:
 - configure a Data Proxy (private APIs / website-to-API)
 - verify prover deployments or use EVM Hardhat integration
 
-## Canonical pages (must use)
-- Root: https://docs.seda.xyz/home/for-agents/getting-started
-- Data source: https://docs.seda.xyz/home/for-agents/modules/10-data-access
-- HTTP timeouts: https://docs.seda.xyz/home/for-agents/modules/12-http-fetch-timeouts
-- Build + test OP: https://docs.seda.xyz/home/for-agents/modules/20-build-op
-- Wallet + tokens: https://docs.seda.xyz/home/for-agents/modules/30-wallet-and-tokens
-- Execute Fast: https://docs.seda.xyz/home/for-agents/modules/40-execute-fast
-- Deploy + execute Core: https://docs.seda.xyz/home/for-agents/modules/50-execute-core
-- Prover deployments: https://docs.seda.xyz/home/for-agents/modules/60-prover-deployments
-- EVM Hardhat: https://docs.seda.xyz/home/for-agents/modules/60-relay-evm-hardhat
-- Data Proxy: https://docs.seda.xyz/home/for-agents/modules/25-data-proxy
+## Canonical navigation (must follow)
+1) Root: https://docs.seda.xyz/home/for-agents/getting-started
+2) Index: https://docs.seda.xyz/home/for-agents/agent-modules
+
+Rule: Do not construct URLs. Do not fetch `modules/*.md` paths.
+Only follow the hyperlinks listed on the Agent Modules page.
 
 **Rule:** Never construct module URLs. Only use the canonical URLs listed above.
 
