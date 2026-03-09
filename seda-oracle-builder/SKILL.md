@@ -1,12 +1,14 @@
 ---
 name: seda-oracle-builder
-version: "0.1.0"
-description: "Build, deploy, and execute SEDA Oracle Programs using the SEDA For-Agents docs as the only source of truth."
+version: "0.2.0"
+description: "Build, deploy (upload), and execute SEDA Oracle Programs using SEDA For-Agents docs with strict checkpoints and no guessing."
 author: "SEDA"
 license: "MIT"
 tags:
   - seda
   - oracle-programs
+  - agents
+  - mcp
   - fast
   - core
   - data-proxy
@@ -15,97 +17,77 @@ tags:
 # SEDA Oracle Program Builder (Agent Skill)
 
 ## Purpose
-Guide a non-coder through building, deploying, and executing SEDA Oracle Programs using the SEDA **For Agents** docs as the only source of truth.
-
-## Root Source of Truth (must use)
-Start here and follow links from this section only:
-https://docs.seda.xyz/home/for-agents/getting-started
-
-## Activation
-Use this skill when the user asks to:
-- build an Oracle Program
-- deploy an Oracle Program
-- execute via SEDA Fast or SEDA Core
-- configure a Data Proxy (private APIs / website-to-API)
-- verify prover deployments or use EVM Hardhat integration
+Guide a non-coder through building, deploying (uploading), and executing SEDA Oracle Programs using SEDA **For Agents** docs as the only source of truth.
 
 ## Canonical navigation (must follow)
-1) Root: https://docs.seda.xyz/home/for-agents/getting-started
-2) Index: https://docs.seda.xyz/home/for-agents/agent-modules
+Start and navigate only from these pages:
+- Getting Started: https://docs.seda.xyz/home/for-agents/getting-started
+- Agent Modules (index): https://docs.seda.xyz/home/for-agents/agent-modules
+- Machine index (llms.txt): https://docs.seda.xyz/home/for-agents/llms-txt
 
-Rule: Do not construct URLs. Do not fetch `modules/*.md` paths.
-Only follow the hyperlinks listed on the Agent Modules page.
-
-**Rule:** Never construct module URLs. Only use the canonical URLs listed above.
+Example module pages (do not hardcode others; follow Agent Modules links):
+- Execute on SEDA Fast: https://docs.seda.xyz/home/for-agents/agent-modules/execute-on-seda-fast
+- Deploy Oracle Program (Upload to SEDA Network): https://docs.seda.xyz/home/for-agents/agent-modules/deploy-oracle-program-upload-to-seda-network
 
 ## Hard rules (must follow)
-1) Do not guess commands, IDs, endpoints, or payload shapes.
-2) Use only the SEDA For Agents pages (root above) + direct subpages they link to.
-3) Never print secrets (Fast API key, mnemonic, private keys). If a command needs a secret, show `{{REDACTED}}`.
-4) One step at a time: output the next action + exact copy/paste commands + checkpoint.
-5) Always include a checkpoint and stop if it fails. Ask for the output snippet needed to diagnose.
-6) Always ask for confirmation before any deploy/upload/post request action.
-7) 8) Never say “deploy to SEDA Fast.” Fast is execution only.
-9) If the user does not have an Oracle Program ID, you must route them to:
-   - wallet/tokens module
-   - deployment module (upload to SEDA Network)
-   before any Fast execution.
+1) Do not guess commands, IDs, endpoints, payload shapes, or URLs.
+2) Do not construct URLs and do not fetch any `modules/*.md` file paths.
+3) Use only the content reachable from the Canonical navigation pages above and the links they contain.
+4) Never print secrets (Fast API key, mnemonic, private keys). If a command requires a secret, show `{{REDACTED}}`.
+5) One step at a time: output the next action + copy/paste + checkpoint + what to paste back.
+6) Always include a checkpoint and stop if it fails; request the exact output needed to diagnose.
+7) Always ask for confirmation before any deploy/upload/post request action.
+8) Never say “deploy to SEDA Fast.” Fast is execution only.
+9) When referencing a module, always use the canonical GitBook URL from Agent Modules or llms.txt, and treat Source file: paths as labels only.
 
-## Terminology (must use these words)
-- Deploy / Upload = publish Oracle Program WASM to the SEDA Network using wallet + tokens (testnet or mainnet).
-- Oracle Program ID = the output of deployment/upload.
+## Terminology (must use)
+- Deploy / Upload = publish Oracle Program WASM to the **SEDA Network** using wallet + tokens (testnet or mainnet). Output: **Oracle Program ID**.
 - Execute (Fast) = call Fast `/execute` with API key + Oracle Program ID + execInputs.
-- Execute (Core) = post a Data Request onchain and await result.
+- Execute (Core) = post an onchain Data Request and await result.
+- Data Proxy = a separate service to hold credentials and expose private/proprietary APIs to SEDA.
 
 ## Required safety behavior
-- Treat wallet mnemonics as high-risk. Never ask the user to paste mnemonics into chat unless explicitly required and the user agrees.
-- Prefer testnet flows first.
-- Warn the user that **Fast execution still requires tokens to deploy a new Oracle Program** (deployment is on SEDA Network).
+- Treat mnemonics as high-risk. Never ask the user to paste a mnemonic into chat by default.
+- Prefer testnet first.
+- Warn the user: Fast execution can happen without tokens only when executing an existing OP; deploying a new OP still requires wallet+tokens.
 
-## Default workflow (decision tree)
-When user says “build an Oracle Program”:
+---
 
-A) Ask for two choices (only if unclear):
-   1) Delivery: Fast or Core
-   2) Data source type: supported feed / public API / private API / website-only
+## Mandatory Step 0: Environment Gate (choose execution mode)
+Before any build/deploy/execution steps, determine which mode is possible.
 
-B) Route based on answers:
-   - Supported feed → proceed to OP build or execution
-   - Public API → require reading HTTP timeouts page before implementing fetch
-   - Private/website → require Data Proxy runbook before OP logic
+### Gate questions (ask user first)
+- “Do you have an MCP server connected (e.g., `seda-mcp`) that can run commands on your machine?”
+- “Are you running commands on your local Mac, or inside a cloud shell?”
 
-C) Execution plan:
-   - Build + local test OP
-   - Wallet + tokens (required for deployment/upload)
-   - Deploy/Upload OP to SEDA Network (produces Oracle Program ID)
-   - Execute:
-     - Fast execute: API key + Oracle Program ID + execInputs
-     - or Core execute: post Data Request onchain
+### Mode selection rules
+Choose exactly one mode:
 
-D) Optional:
-   - If EVM consumption required: verify prover exists via prover deployments page, then Hardhat integration.
+**Mode A: MCP Mode (preferred)**
+Use if an MCP server is available that exposes build/deploy tools (env_check, clone/update, build, test, deploy, post-dr, fast execute).
+- In this mode, do not output install instructions for bun/rust.
+- Call MCP tools for execution and return tool outputs.
+- Keep secrets out of chat; use local env/secret storage on the MCP host.
 
-## Output format (mandatory)
-Every response must include:
+**Mode B: Local Mode (user runs commands)**
+Use if the user will run commands on their Mac and paste outputs back.
+- Output exact copy/paste commands from For-Agents pages only.
+- Never suggest installing dependencies unless the For-Agents page explicitly requires it.
 
-### Next action
-(1 sentence)
+**Mode C: Cloud Shell Mode (avoid installs)**
+Use only if the environment already has required toolchain (git, bun, rustc/cargo).
+- Do not attempt `apt-get` or package installs unless explicitly allowed by the user and confirmed possible.
+- If toolchain is missing, switch to Mode A or B.
 
-### Copy/paste
-(Commands or exact instructions)
+### Environment check action
+If in MCP Mode: call `env_check`.
+If in Local/Cloud Mode: ask the user to run and paste:
 
-### Checkpoint
-(What success looks like)
-
-### Paste back
-(Exactly what the user should paste back: command output snippet, URL, program ID, request ID, error)
-
-## Minimal prompts to ask the user
-Ask for only what you need, one at a time:
-- Which path: Fast or Core?
-- Which data source type?
-- If Fast: Fast API key (never echo it)
-- If deploying: confirmation + wallet/tokens readiness
-- If Core deploy: confirmation + whether mnemonic is already set locally (never request it by default)
-
-If any page is missing or inaccessible, stop and ask the user for the correct URL.
+```bash
+which git bun node npm rustc cargo || true
+git --version || true
+bun --version || true
+node --version || true
+npm --version || true
+rustc --version || true
+cargo --version || true
